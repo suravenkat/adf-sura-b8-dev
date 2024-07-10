@@ -5,7 +5,14 @@
 			{
 				"name": "ADFName",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Wait1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureOutput": false,
 					"secureInput": false
@@ -14,7 +21,7 @@
 				"typeProperties": {
 					"variableName": "ADFName",
 					"value": {
-						"value": "@pipeline().DataFactory",
+						"value": "@pipeline().RunId",
 						"type": "Expression"
 					}
 				}
@@ -65,6 +72,15 @@
 						"value": "@pipeline().RunId",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
 				}
 			}
 		],
