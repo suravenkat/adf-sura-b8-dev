@@ -1,0 +1,10 @@
+{
+	"container": {
+		"type": "string",
+		"value": "sourcecontainerb8"
+	},
+	"filepath": {
+		"type": "string",
+		"value": "target"
+	}
+}

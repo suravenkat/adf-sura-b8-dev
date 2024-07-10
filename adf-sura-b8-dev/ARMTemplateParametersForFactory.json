@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-sura-b8-dev"
+		},
+		"ls_sourceSQL_Server_connectionString": {
+			"value": ""
+		},
+		"ls_source_target_adls_accountKey": {
+			"value": ""
+		},
+		"ls_target_sql_connectionString": {
+			"value": ""
+		},
+		"ls_RestService1_properties_typeProperties_url": {
+			"value": "https://reqres.in/api/users"
+		},
+		"ls_restApi_to_copy_properties_typeProperties_url": {
+			"value": "https://reqres.in/api/users"
+		},
+		"ls_source_target_adls_properties_typeProperties_url": {
+			"value": "https://suraadlsb8.dfs.core.windows.net"
+		},
+		"Tumbling_Window_Trigger_properties_pipeline_parameters_startdate": {
+			"value": "@trigger().outputs.windowStartTime"
+		},
+		"Tumbling_Window_Trigger_properties_pipeline_parameters_enddate": {
+			"value": "@trigger().outputs.windowEndTime"
+		}
+	}
+}
