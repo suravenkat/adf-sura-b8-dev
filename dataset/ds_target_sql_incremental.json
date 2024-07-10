@@ -1,0 +1,34 @@
+{
+	"name": "ds_target_sql_incremental",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_target_sql",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"TableSchema": {
+				"type": "string"
+			},
+			"TableName": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "DS_LoadTypes"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().TableSchema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

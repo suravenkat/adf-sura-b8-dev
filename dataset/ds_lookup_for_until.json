@@ -1,0 +1,13 @@
+{
+	"name": "ds_lookup_for_until",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sourceSQL_Server",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

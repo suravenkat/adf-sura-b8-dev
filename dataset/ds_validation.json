@@ -1,0 +1,24 @@
+{
+	"name": "ds_validation",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_source_target_adls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "sourceforValidation",
+				"fileSystem": "sourcecontainerb8"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": false,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

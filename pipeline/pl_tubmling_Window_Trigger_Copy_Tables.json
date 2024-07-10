@@ -1,0 +1,81 @@
+{
+	"name": "pl_tubmling_Window_Trigger_Copy_Tables",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[usp_for_sales_tumbling]",
+						"storedProcedureParameters": {
+							"enddate": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.enddate",
+									"type": "Expression"
+								}
+							},
+							"startdate": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.startdate",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_source_copy_Tumbling_Window",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_Target_copy_Tumbling_WIndow",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"startdate": {
+				"type": "string"
+			},
+			"enddate": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-07-05T14:53:31Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

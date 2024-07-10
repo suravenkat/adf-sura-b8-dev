@@ -1,0 +1,145 @@
+{
+	"name": "pl_source_to_target",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.TableList",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_source_AzureSqlTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"SchemaName": {
+											"value": "@item().SourceTable.Schema",
+											"type": "Expression"
+										},
+										"TableName": {
+											"value": "@item().SourceTable.Name",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_target_AzureSqlTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"TargetSchemaName": {
+											"value": "@item().TargetTable.Schema",
+											"type": "Expression"
+										},
+										"TargetTableName": {
+											"value": "@item().TargetTable.Name",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Script1",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_sourceSQL_Server",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "INSERT INTO dwh_core.comm_pims_rw_sales_lp\n    SELECT \n        a.*\n    FROM \n        replica_northmpims.rw_sales_vw a\n    LEFT OUTER JOIN \n        dwh_core.comm_pims_rw_nodes_lp b\n    ON \n        a.SolutionID = b.SolutionID\n        AND a.NodeID = b.NodeID\n    WHERE \n        a.PeriodTag <> '.'\n        AND a.StreamTag != 'LOS'\n    ORDER BY \n        a.SolutionID,\n        a.CaseID,\n        a.NodeID,\n        a.PeriodID,\n        a.StreamReportOrder;"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"parameters": {
+			"TableList": {
+				"type": "array",
+				"defaultValue": [
+					{
+						"SourceTable": {
+							"Name": "RW_Nodes_vw",
+							"Schema": "dbo",
+							"WaterMarkColumn": "last_updated"
+						},
+						"TargetTable": {
+							"Name": "comm_pims_rw_nodes_lp",
+							"Schema": "dbo",
+							"WaterMarkColumn": "last_updated"
+						}
+					}
+				]
+			}
+		},
+		"folder": {
+			"name": "New folder"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-07-10T13:40:30Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

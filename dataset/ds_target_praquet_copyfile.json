@@ -1,0 +1,21 @@
+{
+	"name": "ds_target_praquet_copyfile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_source_target_adls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "target",
+				"fileSystem": "sourcecontainerb8"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

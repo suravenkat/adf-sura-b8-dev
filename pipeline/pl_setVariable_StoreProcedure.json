@@ -1,0 +1,136 @@
+{
+	"name": "pl_setVariable_StoreProcedure",
+	"properties": {
+		"activities": [
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Pipeline_run_id",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_adfpipelinedetails]",
+					"storedProcedureParameters": {
+						"adfname": {
+							"value": {
+								"value": "@variables('ADFName')",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"pipeline_runid": {
+							"value": {
+								"value": "@variables('PipelineRunID')",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"pipelinename": {
+							"value": {
+								"value": "@variables('pipelineName')",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_sourceSQL_Server",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "ADFName",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "ADFName",
+					"value": {
+						"value": "@pipeline().DataFactory",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "pipeline_name",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ADFName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "pipelineName",
+					"value": {
+						"value": "@pipeline().Pipeline",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Pipeline_run_id",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "pipeline_name",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "PipelineRunID",
+					"value": {
+						"value": "@pipeline().RunId",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"ADFName": {
+				"type": "String"
+			},
+			"pipelineName": {
+				"type": "String"
+			},
+			"PipelineRunID": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-24T15:00:08Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

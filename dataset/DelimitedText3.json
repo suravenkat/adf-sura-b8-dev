@@ -1,0 +1,101 @@
+{
+	"name": "DelimitedText3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_source_target_adls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "source",
+				"fileSystem": "sourcecontainerb8"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "region",
+				"type": "String"
+			},
+			{
+				"name": "state",
+				"type": "String"
+			},
+			{
+				"name": "location",
+				"type": "String"
+			},
+			{
+				"name": "storeid",
+				"type": "String"
+			},
+			{
+				"name": "cat_id",
+				"type": "String"
+			},
+			{
+				"name": "category",
+				"type": "String"
+			},
+			{
+				"name": "sub_cate",
+				"type": "String"
+			},
+			{
+				"name": "prodid",
+				"type": "String"
+			},
+			{
+				"name": "prodname",
+				"type": "String"
+			},
+			{
+				"name": "retailprice",
+				"type": "String"
+			},
+			{
+				"name": "discprice",
+				"type": "String"
+			},
+			{
+				"name": "isfkprod",
+				"type": "String"
+			},
+			{
+				"name": "prodrating",
+				"type": "String"
+			},
+			{
+				"name": "brand",
+				"type": "String"
+			},
+			{
+				"name": "time_stamp",
+				"type": "String"
+			},
+			{
+				"name": "year",
+				"type": "String"
+			},
+			{
+				"name": "month",
+				"type": "String"
+			},
+			{
+				"name": "day",
+				"type": "String"
+			},
+			{
+				"name": "SoldCount",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

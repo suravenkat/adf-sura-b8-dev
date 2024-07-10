@@ -1,0 +1,24 @@
+{
+	"name": "copyFile_trigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pl_copy_csvFiles",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 5,
+				"startTime": "2024-07-04T21:05:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}

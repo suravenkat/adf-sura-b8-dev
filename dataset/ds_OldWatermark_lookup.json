@@ -1,0 +1,20 @@
+{
+	"name": "ds_OldWatermark_lookup",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sourceSQL_Server",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DS_LoadTypes"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "watermarktable"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

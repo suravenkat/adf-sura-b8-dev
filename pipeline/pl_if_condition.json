@@ -1,0 +1,64 @@
+{
+	"name": "pl_if_condition",
+	"properties": {
+		"activities": [
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@contains(pipeline().parameters.input, 'files')",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Run_SQL_Load_table_pipeline",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_copy_SQL_Table",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Copy_Files",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_copyFile",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"input": {
+				"type": "string",
+				"defaultValue": "wrongInput"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-25T15:10:56Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

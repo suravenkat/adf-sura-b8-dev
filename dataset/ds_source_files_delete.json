@@ -1,0 +1,28 @@
+{
+	"name": "ds_source_files_delete",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_source_target_adls",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"FileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().FileName",
+					"type": "Expression"
+				},
+				"folderPath": "source",
+				"fileSystem": "sourcecontainerb8"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
