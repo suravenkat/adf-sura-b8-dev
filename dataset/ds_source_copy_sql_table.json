@@ -2,7 +2,7 @@
 	"name": "ds_source_copy_sql_table",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_sourceSQL_Server",
+			"referenceName": "ls_SQL_source_Keyvault",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "employees"
+			"table": "salesitems"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
