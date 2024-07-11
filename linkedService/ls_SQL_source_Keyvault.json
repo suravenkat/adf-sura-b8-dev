@@ -1,0 +1,17 @@
+{
+	"name": "ls_SQL_source_Keyvault",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "adf_b8_keyvault_dev",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sourcesqldbsecret"
+			}
+		}
+	}
+}
