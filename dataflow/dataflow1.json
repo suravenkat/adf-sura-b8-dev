@@ -1,0 +1,90 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_source_dataflows",
+						"type": "DatasetReference"
+					},
+					"name": "sourceTable1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_source_dataflows_Table2",
+						"type": "DatasetReference"
+					},
+					"name": "sourceTable2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_target_dataflows",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "filter1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as integer,",
+				"          name as string,",
+				"          dep as string,",
+				"          salary as decimal(10,2),",
+				"          last_updated as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> sourceTable1",
+				"source(output(",
+				"          id as integer,",
+				"          location as string,",
+				"          mobilenum as string,",
+				"          address as string,",
+				"          last_updated as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> sourceTable2",
+				"sourceTable1, sourceTable2 join(sourceTable1@id == sourceTable2@id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 filter(equals(dep, 'HR')) ~> filter1",
+				"filter1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['dataflowoutput'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          emp_id = sourceTable1@id,",
+				"          name,",
+				"          dep,",
+				"          salary,",
+				"          location,",
+				"          mobilenum,",
+				"          address,",
+				"          last_updated = sourceTable2@last_updated",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}
