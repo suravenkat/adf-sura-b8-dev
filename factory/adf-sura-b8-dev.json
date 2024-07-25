@@ -10,7 +10,7 @@
 				"type": "string",
 				"value": "target"
 			},
-			"ADLS_Prefix": {
+			"ADLS_Path_Prefix": {
 				"type": "string",
 				"value": "abfss://sourcecontainerb8@suraadlsb8.dfs.core.windows.net"
 			}
