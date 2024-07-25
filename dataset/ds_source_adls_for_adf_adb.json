@@ -1,0 +1,29 @@
+{
+	"name": "ds_source_adls_for_adf_adb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_source_target_adls",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"TableFileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().TableFileName",
+					"type": "Expression"
+				},
+				"folderPath": "/adb/lz_data/src_sys/asia/sales/",
+				"fileSystem": "sourcecontainerb8"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
