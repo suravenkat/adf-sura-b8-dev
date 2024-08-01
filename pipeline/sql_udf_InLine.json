@@ -1,0 +1,126 @@
+{
+	"name": "sql_udf_InLine",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT \n    ID,\n    Name,\n    NodeTag,\n    Description,\n    CreatedDate,\n    CASE \n        WHEN UPPER(SUBSTRING(NodeTag, 1, 1)) = SUBSTRING(NodeTag, 1, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             UPPER(SUBSTRING(NodeTag, 2, 1)) = SUBSTRING(NodeTag, 2, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             UPPER(SUBSTRING(NodeTag, 3, 1)) = SUBSTRING(NodeTag, 3, 1) COLLATE SQL_Latin1_General_CP1_CS_AS\n        THEN NodeTag + '_1'\n        WHEN LOWER(SUBSTRING(NodeTag, 1, 1)) = SUBSTRING(NodeTag, 1, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             LOWER(SUBSTRING(NodeTag, 2, 1)) = SUBSTRING(NodeTag, 2, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             LOWER(SUBSTRING(NodeTag, 3, 1)) = SUBSTRING(NodeTag, 3, 1) COLLATE SQL_Latin1_General_CP1_CS_AS\n        THEN NodeTag + '_2'\n        WHEN UPPER(SUBSTRING(NodeTag, 1, 1)) = SUBSTRING(NodeTag, 1, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             LOWER(SUBSTRING(NodeTag, 2, 1)) = SUBSTRING(NodeTag, 2, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             LOWER(SUBSTRING(NodeTag, 3, 1)) = SUBSTRING(NodeTag, 3, 1) COLLATE SQL_Latin1_General_CP1_CS_AS\n        THEN NodeTag + '_5'\n        WHEN LOWER(SUBSTRING(NodeTag, 1, 1)) = SUBSTRING(NodeTag, 1, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             UPPER(SUBSTRING(NodeTag, 2, 1)) = SUBSTRING(NodeTag, 2, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             LOWER(SUBSTRING(NodeTag, 3, 1)) = SUBSTRING(NodeTag, 3, 1) COLLATE SQL_Latin1_General_CP1_CS_AS\n        THEN NodeTag + '_7'\n        WHEN LOWER(SUBSTRING(NodeTag, 1, 1)) = SUBSTRING(NodeTag, 1, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             LOWER(SUBSTRING(NodeTag, 2, 1)) = SUBSTRING(NodeTag, 2, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             UPPER(SUBSTRING(NodeTag, 3, 1)) = SUBSTRING(NodeTag, 3, 1) COLLATE SQL_Latin1_General_CP1_CS_AS\n        THEN NodeTag + '_4'\n        ELSE NodeTag + '_Unknown'\n    END AS ConvertedNodeTag\nFROM \n    SampleData;",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "AzureSqlTable2",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DelimitedText4udf",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "ASCII_SQL_UDF_Copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT \n    ID,\n    Name,\n    NodeTag,\n    Description,\n    CreatedDate,\n    CASE \n        WHEN UPPER(SUBSTRING(NodeTag, 1, 1)) = SUBSTRING(NodeTag, 1, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             UPPER(SUBSTRING(NodeTag, 2, 1)) = SUBSTRING(NodeTag, 2, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             UPPER(SUBSTRING(NodeTag, 3, 1)) = SUBSTRING(NodeTag, 3, 1) COLLATE SQL_Latin1_General_CP1_CS_AS\n        THEN NodeTag + '_1'\n        WHEN LOWER(SUBSTRING(NodeTag, 1, 1)) = SUBSTRING(NodeTag, 1, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             LOWER(SUBSTRING(NodeTag, 2, 1)) = SUBSTRING(NodeTag, 2, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             LOWER(SUBSTRING(NodeTag, 3, 1)) = SUBSTRING(NodeTag, 3, 1) COLLATE SQL_Latin1_General_CP1_CS_AS\n        THEN NodeTag + '_2'\n        WHEN UPPER(SUBSTRING(NodeTag, 1, 1)) = SUBSTRING(NodeTag, 1, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             LOWER(SUBSTRING(NodeTag, 2, 1)) = SUBSTRING(NodeTag, 2, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             LOWER(SUBSTRING(NodeTag, 3, 1)) = SUBSTRING(NodeTag, 3, 1) COLLATE SQL_Latin1_General_CP1_CS_AS\n        THEN NodeTag + '_5'\n        WHEN LOWER(SUBSTRING(NodeTag, 1, 1)) = SUBSTRING(NodeTag, 1, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             UPPER(SUBSTRING(NodeTag, 2, 1)) = SUBSTRING(NodeTag, 2, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             LOWER(SUBSTRING(NodeTag, 3, 1)) = SUBSTRING(NodeTag, 3, 1) COLLATE SQL_Latin1_General_CP1_CS_AS\n        THEN NodeTag + '_7'\n        WHEN LOWER(SUBSTRING(NodeTag, 1, 1)) = SUBSTRING(NodeTag, 1, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             LOWER(SUBSTRING(NodeTag, 2, 1)) = SUBSTRING(NodeTag, 2, 1) COLLATE SQL_Latin1_General_CP1_CS_AS AND\n             UPPER(SUBSTRING(NodeTag, 3, 1)) = SUBSTRING(NodeTag, 3, 1) COLLATE SQL_Latin1_General_CP1_CS_AS\n        THEN NodeTag + '_4'\n        ELSE NodeTag + '_Unknown'\n    END AS ConvertedNodeTag,\n    Convert(varchar(5), ASCII(Substring(NodeTag, 1, 1))) AS AsciiValueOfFirstChar\nFROM \n    SampleData;",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "AzureSqlTable2",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DelimitedText4udf",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "New folder"
+		},
+		"annotations": []
+	}
+}
