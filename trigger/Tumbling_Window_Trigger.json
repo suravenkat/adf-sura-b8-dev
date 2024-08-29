@@ -2,7 +2,7 @@
 	"name": "Tumbling_Window_Trigger",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipeline": {
 			"pipelineReference": {
 				"referenceName": "pl_tubmling_Window_Trigger_Copy_Tables",
